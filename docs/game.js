@@ -136,7 +136,7 @@ class LightsupGame {
         const hasWon = this.grid.every(row => row.every(cell => cell));
         if (hasWon) {
             clearInterval(this.timerInterval);
-            const timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
+            const timeSpent = (Date.now() - this.startTime) / 1000;
             
             // 更新統計數據
             this.gameStats.gamesCompleted++;
@@ -175,11 +175,11 @@ class LightsupGame {
     }
 
     updateTimer() {
-        const seconds = Math.floor((Date.now() - this.startTime) / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
+        const elapsedTime = (Date.now() - this.startTime) / 1000;
+        const minutes = Math.floor(elapsedTime / 60);
+        const seconds = Math.floor(elapsedTime % 60);
         this.timeElement.textContent = 
-            `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
     // 加載遊戲統計數據
