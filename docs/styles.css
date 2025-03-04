@@ -105,6 +105,9 @@ h1 {
     overflow-y: auto;
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .formula-section::before {
@@ -279,6 +282,9 @@ h1 {
     padding-top: 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
+    
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .history-item {
@@ -339,4 +345,40 @@ h1 {
 
 .history-item:hover .mini-pattern-grid {
     display: grid;
+}
+
+/* Webkit瀏覽器（Chrome、Safari等）的捲軸樣式 */
+.formula-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.formula-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.formula-section::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* 當不需要捲軸時隱藏 */
+.formula-section::-webkit-scrollbar-thumb:vertical {
+    min-height: 30px;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.history-list::-webkit-scrollbar-thumb:vertical {
+    min-height: 30px;
 }
