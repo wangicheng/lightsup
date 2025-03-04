@@ -179,6 +179,8 @@ h1 {
     padding: 8px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
 .pattern-grid div {
@@ -195,6 +197,10 @@ h1 {
 .pattern-grid div.click {
     background-color: var(--button-on);
     opacity: 0.6;
+}
+
+.pattern-grid:hover {
+    transform: scale(1.05);
 }
 
 .formula-section h4 {
@@ -281,10 +287,16 @@ h1 {
     padding: 0.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .history-item:last-child {
     border-bottom: none;
+}
+
+.history-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .history-info {

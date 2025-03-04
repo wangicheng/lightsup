@@ -5,6 +5,7 @@ class LightsupGame {
         this.startTime = 0;
         this.timerInterval = 0;
         this.isGameStarted = false;
+        this.isPracticeMode = false;  // 新增練習模式標記
 
         this.gridElement = document.getElementById('grid');
         this.movesElement = document.getElementById('moves');
@@ -32,13 +33,22 @@ class LightsupGame {
         this.startButton.addEventListener('click', () => this.startGame());
     }
 
-    startGame() {
+    startGame(initialPattern = null) {
         // 重置遊戲狀態
         this.moves = 0;
         this.movesElement.textContent = '0';
         this.isGameStarted = true;
         this.clearGrid();
-        this.randomizeGrid();
+        
+        if (initialPattern) {
+            // 練習模式：使用提供的初始狀態
+            this.isPracticeMode = true;
+            this.grid = initialPattern.map(row => [...row]);
+        } else {
+            // 正常模式：隨機生成初始狀態
+            this.isPracticeMode = false;
+            this.randomizeGrid();
+        }
         
         // 保存初始狀態
         this.initialState = this.grid.map(row => [...row]);
@@ -138,37 +148,37 @@ class LightsupGame {
             clearInterval(this.timerInterval);
             const timeSpent = (Date.now() - this.startTime) / 1000;
             
-            // 更新統計數據
-            this.gameStats.gamesCompleted++;
-            
-            // 更新最佳時間
-            if (!this.gameStats.bestTime || timeSpent < this.gameStats.bestTime) {
-                this.gameStats.bestTime = timeSpent;
+            if (!this.isPracticeMode) {
+                // 只在非練習模式時更新統計數據
+                this.gameStats.gamesCompleted++;
+                
+                if (!this.gameStats.bestTime || timeSpent < this.gameStats.bestTime) {
+                    this.gameStats.bestTime = timeSpent;
+                }
+                
+                this.gameStats.history.push({
+                    initialState: this.initialState,
+                    time: timeSpent,
+                    moves: this.moves
+                });
+                
+                if (this.gameStats.history.length > 20) {
+                    this.gameStats.history = this.gameStats.history.slice(-20);
+                }
+                
+                this.saveGameStats();
             }
-            
-            // 添加歷史記錄，使用初始狀態替代日期
-            this.gameStats.history.push({
-                initialState: this.initialState,
-                time: timeSpent,
-                moves: this.moves
-            });
-            
-            // 只保留最近的20條記錄
-            if (this.gameStats.history.length > 20) {
-                this.gameStats.history = this.gameStats.history.slice(-20);
-            }
-            
-            // 保存數據
-            this.saveGameStats();
             
             setTimeout(() => {
-                alert(`恭喜獲勝！\n步數：${this.moves}\n時間：${this.timeElement.textContent}`);
+                alert(`${this.isPracticeMode ? '練習完成' : '恭喜獲勝'}！\n步數：${this.moves}\n時間：${this.timeElement.textContent}`);
                 this.isGameStarted = false;
                 
-                // 更新成績記錄顯示
-                const recordContent = document.getElementById('recordContent');
-                if (recordContent) {
-                    window.updateRecordPanel(recordContent, this.gameStats);
+                if (!this.isPracticeMode) {
+                    // 只在非練習模式時更新記錄面板
+                    const recordContent = document.getElementById('recordContent');
+                    if (recordContent) {
+                        window.updateRecordPanel(recordContent, this.gameStats);
+                    }
                 }
             }, 100);
         }
@@ -207,9 +217,11 @@ class LightsupGame {
     }
 }
 
-// 當 DOM 載入完成後初始化遊戲
+// 導出全局遊戲實例
+let gameInstance = null;
 document.addEventListener('DOMContentLoaded', () => {
-    new LightsupGame();
+    gameInstance = new LightsupGame();
+    window.gameInstance = gameInstance;  // 使其可以從其他檔案訪問
 });
 
 window.createRightPanel = function() {

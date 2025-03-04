@@ -243,21 +243,24 @@ class FormulaManager {
         // 創建目標狀態
         const targetSection = document.createElement('div');
         targetSection.className = 'formula-target';
-        targetSection.innerHTML = this.createPatternGrid(formula.target, 'target');
+        targetSection.appendChild(this.createPatternGrid(formula.target, 'target'));
 
         // 創建解法區域
         const solutionsSection = document.createElement('div');
         solutionsSection.className = 'formula-solutions';
-        solutionsSection.innerHTML = `
-            <div class="solutions-grid">
-                ${formula.solutions.map(solution => `
-                    <div class="solution-item">
-                        ${this.createPatternGrid(solution.pattern, 'solution')}
-                    </div>
-                `).join('')}
-            </div>
-        `;
+        
+        const solutionsGrid = document.createElement('div');
+        solutionsGrid.className = 'solutions-grid';
+        
+        // 為每個解法創建元素
+        formula.solutions.forEach(solution => {
+            const solutionItem = document.createElement('div');
+            solutionItem.className = 'solution-item';
+            solutionItem.appendChild(this.createPatternGrid(solution.pattern, 'solution'));
+            solutionsGrid.appendChild(solutionItem);
+        });
 
+        solutionsSection.appendChild(solutionsGrid);
         contentContainer.appendChild(targetSection);
         contentContainer.appendChild(solutionsSection);
         formulaItem.appendChild(contentContainer);
@@ -266,11 +269,28 @@ class FormulaManager {
     }
 
     createPatternGrid(pattern, type) {
-        const cells = pattern.flat().map(cell => 
-            `<div class="${cell ? (type === 'target' ? 'on' : 'click') : ''}"></div>`
-        ).join('');
+        const grid = document.createElement('div');
+        grid.className = 'pattern-grid';
+        
+        pattern.forEach((row, i) => {
+            row.forEach((cell, j) => {
+                const cellDiv = document.createElement('div');
+                cellDiv.className = cell ? (type === 'target' ? 'on' : 'click') : '';
+                grid.appendChild(cellDiv);
+            });
+        });
 
-        return `<div class="pattern-grid">${cells}</div>`;
+        if (type === 'target') {
+            grid.addEventListener('click', () => {
+                if (window.gameInstance) {
+                    // 使用目標狀態作為初始狀態
+                    window.gameInstance.startGame(pattern);
+                }
+            });
+            grid.style.cursor = 'pointer';
+        }
+
+        return grid;
     }
 }
 

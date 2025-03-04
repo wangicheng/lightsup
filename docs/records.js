@@ -60,16 +60,9 @@ window.updateRecordPanel = function(container, stats) {
             <span class="moves">步數: ${record.moves}</span>
         `;
         
-        // 創建初始狀態網格（作為懸浮顯示內容）
+        // 創建初始狀態網格
         const gridDiv = document.createElement('div');
         gridDiv.className = 'mini-pattern-grid';
-        
-        // 添加滑鼠事件來控制 mini-pattern-grid 的位置
-        historyItem.addEventListener('mouseenter', (e) => {
-            const rect = historyItem.getBoundingClientRect();
-            gridDiv.style.left = `${rect.left + rect.width / 2}px`;
-            gridDiv.style.top = `${rect.top - 85}px`; // 在項目上方顯示
-        });
         
         if (record.initialState) {
             record.initialState.forEach(row => {
@@ -80,6 +73,20 @@ window.updateRecordPanel = function(container, stats) {
                 });
             });
         }
+
+        // 添加點擊事件來開始練習
+        historyItem.addEventListener('click', () => {
+            if (window.gameInstance && record.initialState) {
+                window.gameInstance.startGame(record.initialState);
+            }
+        });
+        
+        // 添加滑鼠事件來控制 mini-pattern-grid 的位置
+        historyItem.addEventListener('mouseenter', (e) => {
+            const rect = historyItem.getBoundingClientRect();
+            gridDiv.style.left = `${rect.left + rect.width / 2}px`;
+            gridDiv.style.top = `${rect.top - 85}px`; // 在項目上方顯示
+        });
         
         historyItem.appendChild(infoDiv);
         historyItem.appendChild(gridDiv);
