@@ -43,18 +43,44 @@ window.updateRecordPanel = function(container, stats) {
     // 顯示歷史記錄
     const historyDiv = document.createElement('div');
     historyDiv.className = 'record-item';
-    historyDiv.innerHTML = `
-        <h3>最近記錄</h3>
-        <div class="history-list">
-            ${stats.history.slice().reverse().map(record => `
-                <div class="history-item">
-                    <span>${new Date(record.date).toLocaleDateString()}</span>
-                    <span>時間: ${formatTime(record.time)}</span>
-                    <span>步數: ${record.moves}</span>
-                </div>
-            `).join('')}
-        </div>
-    `;
+    historyDiv.innerHTML = '<h3>最近記錄</h3>';
+    
+    const historyList = document.createElement('div');
+    historyList.className = 'history-list';
+    
+    stats.history.slice().reverse().forEach(record => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        
+        // 添加時間和步數信息
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'history-info';
+        infoDiv.innerHTML = `
+            <span class="time">時間: ${formatTime(record.time)}</span>
+            <span class="moves">步數: ${record.moves}</span>
+        `;
+        
+        // 創建初始狀態網格（作為懸浮顯示內容）
+        const gridDiv = document.createElement('div');
+        gridDiv.className = 'mini-pattern-grid';
+        
+        // 生成小型網格
+        if (record.initialState) {
+            record.initialState.forEach(row => {
+                row.forEach(cell => {
+                    const cellDiv = document.createElement('div');
+                    cellDiv.className = cell ? 'on' : '';
+                    gridDiv.appendChild(cellDiv);
+                });
+            });
+        }
+        
+        historyItem.appendChild(infoDiv);
+        historyItem.appendChild(gridDiv);
+        historyList.appendChild(historyItem);
+    });
+    
+    historyDiv.appendChild(historyList);
     
     recordList.appendChild(bestTimeDiv);
     recordList.appendChild(gamesCompletedDiv);

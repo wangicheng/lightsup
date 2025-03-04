@@ -39,6 +39,10 @@ class LightsupGame {
         this.isGameStarted = true;
         this.clearGrid();
         this.randomizeGrid();
+        
+        // 保存初始狀態
+        this.initialState = this.grid.map(row => [...row]);
+        
         this.renderGrid();
         
         // 重置計時器
@@ -142,9 +146,9 @@ class LightsupGame {
                 this.gameStats.bestTime = timeSpent;
             }
             
-            // 添加歷史記錄
+            // 添加歷史記錄，使用初始狀態替代日期
             this.gameStats.history.push({
-                date: new Date().toISOString(),
+                initialState: this.initialState,
                 time: timeSpent,
                 moves: this.moves
             });
@@ -187,7 +191,14 @@ class LightsupGame {
         };
         
         const savedStats = localStorage.getItem('lightsupStats');
-        return savedStats ? JSON.parse(savedStats) : defaultStats;
+        if (!savedStats) return defaultStats;
+        
+        // 處理舊版本的歷史記錄
+        const stats = JSON.parse(savedStats);
+        if (stats.history) {
+            stats.history = stats.history.filter(record => record.initialState);
+        }
+        return stats;
     }
     
     // 保存遊戲統計數據
