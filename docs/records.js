@@ -24,6 +24,10 @@ window.updateRecordPanel = function(container, stats) {
     const recordList = container.querySelector('.record-list');
     recordList.innerHTML = '';
     
+    // 創建包含所有統計資訊的容器
+    const statsGrid = document.createElement('div');
+    statsGrid.className = 'stats-grid';
+    
     // 顯示最佳時間
     const bestTimeDiv = document.createElement('div');
     bestTimeDiv.className = 'record-item';
@@ -31,10 +35,6 @@ window.updateRecordPanel = function(container, stats) {
         <h3>最佳時間</h3>
         <p>${stats.bestTime ? formatTime(stats.bestTime) : '尚無記錄'}</p>
     `;
-    
-    // 創建包含遊戲完成次數和平均時間的容器
-    const statsRow = document.createElement('div');
-    statsRow.className = 'stats-row';
     
     // 顯示完成次數
     const gamesCompletedDiv = document.createElement('div');
@@ -57,11 +57,29 @@ window.updateRecordPanel = function(container, stats) {
         <h3>平均時間</h3>
         <p>${averageTime ? formatTime(averageTime) : '尚無記錄'}</p>
     `;
+
+    // 顯示平均步數
+    const averageMovesDiv = document.createElement('div');
+    averageMovesDiv.className = 'record-item';
     
-    // 將兩個統計資訊加入 statsRow
-    statsRow.appendChild(gamesCompletedDiv);
-    statsRow.appendChild(averageTimeDiv);
+    // 計算平均步數
+    const averageMoves = stats.history.length > 0
+        ? (stats.history.reduce((sum, record) => sum + record.moves, 0) / stats.history.length).toFixed(1)
+        : null;
     
+    averageMovesDiv.innerHTML = `
+        <h3>平均步數</h3>
+        <p>${averageMoves ? averageMoves + ' 步' : '尚無記錄'}</p>
+    `;
+    
+    // 將所有統計資訊加入 statsGrid
+    statsGrid.appendChild(bestTimeDiv);
+    statsGrid.appendChild(gamesCompletedDiv);
+    statsGrid.appendChild(averageTimeDiv);
+    statsGrid.appendChild(averageMovesDiv);
+    
+    recordList.appendChild(statsGrid);
+
     // 顯示歷史記錄
     const historyDiv = document.createElement('div');
     historyDiv.className = 'record-item';
@@ -117,8 +135,6 @@ window.updateRecordPanel = function(container, stats) {
     
     historyDiv.appendChild(historyList);
     
-    recordList.appendChild(bestTimeDiv);
-    recordList.appendChild(statsRow);
     recordList.appendChild(historyDiv);
 }
 

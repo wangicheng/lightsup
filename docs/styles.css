@@ -384,11 +384,16 @@ h1 {
 }
 
 .stats-row {
-    display: flex;
+    display: none;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.stats-row .record-item {
-    flex: 1;
+.stats-grid .record-item {
+    margin-bottom: 0;
 }
