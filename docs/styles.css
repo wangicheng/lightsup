@@ -382,3 +382,13 @@ h1 {
 .history-list::-webkit-scrollbar-thumb:vertical {
     min-height: 30px;
 }
+
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stats-row .record-item {
+    flex: 1;
+}

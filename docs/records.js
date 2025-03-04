@@ -32,6 +32,10 @@ window.updateRecordPanel = function(container, stats) {
         <p>${stats.bestTime ? formatTime(stats.bestTime) : '尚無記錄'}</p>
     `;
     
+    // 創建包含遊戲完成次數和平均時間的容器
+    const statsRow = document.createElement('div');
+    statsRow.className = 'stats-row';
+    
     // 顯示完成次數
     const gamesCompletedDiv = document.createElement('div');
     gamesCompletedDiv.className = 'record-item';
@@ -39,6 +43,24 @@ window.updateRecordPanel = function(container, stats) {
         <h3>遊戲完成次數</h3>
         <p>${stats.gamesCompleted} 次</p>
     `;
+
+    // 顯示平均時間
+    const averageTimeDiv = document.createElement('div');
+    averageTimeDiv.className = 'record-item';
+    
+    // 計算平均時間
+    const averageTime = stats.history.length > 0
+        ? stats.history.reduce((sum, record) => sum + record.time, 0) / stats.history.length
+        : null;
+    
+    averageTimeDiv.innerHTML = `
+        <h3>平均時間</h3>
+        <p>${averageTime ? formatTime(averageTime) : '尚無記錄'}</p>
+    `;
+    
+    // 將兩個統計資訊加入 statsRow
+    statsRow.appendChild(gamesCompletedDiv);
+    statsRow.appendChild(averageTimeDiv);
     
     // 顯示歷史記錄
     const historyDiv = document.createElement('div');
@@ -96,7 +118,7 @@ window.updateRecordPanel = function(container, stats) {
     historyDiv.appendChild(historyList);
     
     recordList.appendChild(bestTimeDiv);
-    recordList.appendChild(gamesCompletedDiv);
+    recordList.appendChild(statsRow);
     recordList.appendChild(historyDiv);
 }
 
