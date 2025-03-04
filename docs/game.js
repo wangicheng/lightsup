@@ -135,9 +135,13 @@ class LightsupGame {
             this.timerInterval = setInterval(() => this.updateTimer(), 1000);
         }
 
+        // 只有在計時器還在運行時才增加步數
+        if (this.timerInterval) {
+            this.moves++;
+            this.movesElement.textContent = this.moves.toString();
+        }
+
         this.toggleLights(row, col, true);
-        this.moves++;
-        this.movesElement.textContent = this.moves.toString();
         this.checkWin();
     }
 
@@ -158,8 +162,9 @@ class LightsupGame {
 
     checkWin() {
         const hasWon = this.grid.every(row => row.every(cell => cell));
-        if (hasWon) {
+        if (hasWon && this.timerInterval) {  // 只在計時器還在運行時才觸發獲勝邏輯
             clearInterval(this.timerInterval);
+            this.timerInterval = null;  // 清除計時器引用
             const timeSpent = (Date.now() - this.startTime) / 1000;
             
             // 獲勝時顯示毫秒
@@ -192,7 +197,6 @@ class LightsupGame {
             
             setTimeout(() => {
                 alert(`${this.isPracticeMode ? '練習完成' : '恭喜獲勝'}！\n步數：${this.moves}\n時間：${this.timeElement.textContent}`);
-                this.isGameStarted = false;
                 
                 if (!this.isPracticeMode) {
                     // 只在非練習模式時更新記錄面板
