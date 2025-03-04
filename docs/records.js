@@ -64,7 +64,13 @@ window.updateRecordPanel = function(container, stats) {
         const gridDiv = document.createElement('div');
         gridDiv.className = 'mini-pattern-grid';
         
-        // 生成小型網格
+        // 添加滑鼠事件來控制 mini-pattern-grid 的位置
+        historyItem.addEventListener('mouseenter', (e) => {
+            const rect = historyItem.getBoundingClientRect();
+            gridDiv.style.left = `${rect.left + rect.width / 2}px`;
+            gridDiv.style.top = `${rect.top - 85}px`; // 在項目上方顯示
+        });
+        
         if (record.initialState) {
             record.initialState.forEach(row => {
                 row.forEach(cell => {
