@@ -4,211 +4,311 @@ class FormulaManager {
         this.formulaContainer.className = 'formula-container';
         container.appendChild(this.formulaContainer);
         
+        // 定義分類配置
+        this.categories = [
+            { id: 'oneRow', label: '一排未完成', isDefault: true },
+            { id: 'twoRows', label: '兩排未完成' },
+        ];
+        
+        // 創建分類標籤和容器
+        this.createCategoryUI();
+        
+        // 將公式數據分類
         this.formulas = {
-            "formulas": [
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [0,0,1,0,0]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [0,0,1,0,0],
-                                [0,1,1,1,0],
-                                [1,0,0,0,1],
-                                [1,0,1,0,1],
-                                [0,0,1,0,0]
-                            ]
-                        },
-                        {
-                            "pattern": [
-                                [0,1,0,1,0],
-                                [1,1,0,1,1],
-                                [0,1,0,1,0],
-                                [0,0,0,0,0],
-                                [0,1,0,1,0]
-                            ]
-                        },
-                        {
-                            "pattern": [
-                                [1,0,0,0,1],
-                                [1,1,0,1,1],
-                                [1,0,0,0,1],
-                                [0,0,0,0,0],
-                                [1,0,0,0,1]
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,0,0,1,0]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [1,0,0,0,0],
-                                [1,1,0,0,0],
-                                [1,0,1,0,0],
-                                [0,1,1,1,0],
-                                [0,0,0,0,1]
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [0,1,0,0,1]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [0,0,0,0,1],
-                                [0,0,0,1,1],
-                                [0,0,1,0,1],
-                                [0,1,1,1,0],
-                                [1,0,0,0,0]
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,0,1,0,1]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [0,0,1,1,1],
-                                [0,1,0,1,0],
-                                [1,1,1,0,0],
-                                [0,0,0,0,0],
-                                [1,1,1,0,0]
-                            ]
-                        },
-                        {
-                            "pattern": [
-                                [1,1,1,0,0],
-                                [0,1,0,1,0],
-                                [0,0,1,1,1],
-                                [0,0,0,0,0],
-                                [0,0,1,1,1]
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [0,0,0,1,1]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [0,1,0,0,0],
-                                [1,1,1,0,0],
-                                [0,0,0,1,0],
-                                [1,1,0,1,1],
-                                [0,0,0,1,0]
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,0,0,0]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [0,0,0,1,0],
-                                [0,0,1,1,1],
-                                [0,1,0,0,0],
-                                [1,1,0,1,1],
-                                [0,1,0,0,0]
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "pattern": [
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [1,1,1,1,1],
-                        [0,1,1,1,0]
-                    ],
-                    "solutions": [
-                        {
-                            "pattern": [
-                                [0,0,0,1,1],
-                                [0,0,1,0,0],
-                                [0,1,1,0,1],
-                                [1,0,1,0,1],
-                                [1,1,0,0,0]
-                            ]
-                        },
-                        {
-                            "pattern": [
-                                [0,1,1,0,1],
-                                [1,0,0,0,1],
-                                [1,0,1,1,0],
-                                [0,0,0,0,0],
-                                [1,0,1,1,0]
-                            ]
-                        },
-                        {
-                            "pattern": [
-                                [1,1,0,0,0],
-                                [0,0,1,0,0],
-                                [1,0,1,1,0],
-                                [1,0,1,0,1],
-                                [0,0,0,1,1]
-                            ]
-                        },
-                        {
-                            "pattern": [
-                                [1,0,1,1,0],
-                                [1,0,0,0,1],
-                                [0,1,1,0,1],
-                                [0,0,0,0,0],
-                                [0,1,1,0,1]
-                            ]
-                        }
-                    ]
-                }
-            ]
+            oneRow: {
+                formulas: [
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [0,0,1,0,0]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [0,0,1,0,0],
+                                    [0,1,1,1,0],
+                                    [1,0,0,0,1],
+                                    [1,0,1,0,1],
+                                    [0,0,1,0,0]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [0,1,0,1,0],
+                                    [1,1,0,1,1],
+                                    [0,1,0,1,0],
+                                    [0,0,0,0,0],
+                                    [0,1,0,1,0]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [1,0,0,0,1],
+                                    [1,1,0,1,1],
+                                    [1,0,0,0,1],
+                                    [0,0,0,0,0],
+                                    [1,0,0,0,1]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,0,0,1,0]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [1,0,0,0,0],
+                                    [1,1,0,0,0],
+                                    [1,0,1,0,0],
+                                    [0,1,1,1,0],
+                                    [0,0,0,0,1]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [0,1,0,0,1]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [0,0,0,0,1],
+                                    [0,0,0,1,1],
+                                    [0,0,1,0,1],
+                                    [0,1,1,1,0],
+                                    [1,0,0,0,0]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [0,0,0,1,1]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [0,1,0,0,0],
+                                    [1,1,1,0,0],
+                                    [0,0,0,1,0],
+                                    [1,1,0,1,1],
+                                    [0,0,0,1,0]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,0,0,0]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [0,0,0,1,0],
+                                    [0,0,1,1,1],
+                                    [0,1,0,0,0],
+                                    [1,1,0,1,1],
+                                    [0,1,0,0,0]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,0,1,0,1]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [0,0,1,1,1],
+                                    [0,1,0,1,0],
+                                    [1,1,1,0,0],
+                                    [0,0,0,0,0],
+                                    [1,1,1,0,0]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [1,1,1,0,0],
+                                    [0,1,0,1,0],
+                                    [0,0,1,1,1],
+                                    [0,0,0,0,0],
+                                    [0,0,1,1,1]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [0,1,1,1,0]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [0,0,0,1,1],
+                                    [0,0,1,0,0],
+                                    [0,1,1,0,1],
+                                    [1,0,1,0,1],
+                                    [1,1,0,0,0]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [0,1,1,0,1],
+                                    [1,0,0,0,1],
+                                    [1,0,1,1,0],
+                                    [0,0,0,0,0],
+                                    [1,0,1,1,0]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [1,1,0,0,0],
+                                    [0,0,1,0,0],
+                                    [1,0,1,1,0],
+                                    [1,0,1,0,1],
+                                    [0,0,0,1,1]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [1,0,1,1,0],
+                                    [1,0,0,0,1],
+                                    [0,1,1,0,1],
+                                    [0,0,0,0,0],
+                                    [0,1,1,0,1]
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            twoRows: {
+                formulas: [
+                    {
+                        "pattern": [
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [1,1,1,1,1],
+                            [0,0,0,0,0],
+                            [0,0,0,0,0]
+                        ],
+                        "solutions": [
+                            {
+                                "pattern": [
+                                    [1,0,1,1,0],
+                                    [1,0,0,0,1],
+                                    [0,1,1,0,1],
+                                    [0,0,0,0,0],
+                                    [1,0,0,1,0]
+                                ]
+                            },
+                            {
+                                "pattern": [
+                                    [0,1,1,0,1],
+                                    [1,0,0,0,1],
+                                    [1,0,1,1,0],
+                                    [0,0,0,0,0],
+                                    [0,1,0,0,1]
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         };
-        this.renderFormulas(this.formulas.formulas);
+
+        // 渲染所有分類的公式
+        this.categories.forEach(category => {
+            const formulas = this.formulas[category.id]?.formulas || [];
+            this.renderFormulas(formulas, this.categoryContainers[category.id]);
+        });
     }
 
-    renderFormulas(formulas) {
+    createCategoryUI() {
+        // 創建標籤容器
+        const tabsContainer = document.createElement('div');
+        tabsContainer.className = 'formula-tabs';
+        
+        // 用於存儲分類容器的引用
+        this.categoryContainers = {};
+        
+        // 為每個分類創建標籤和容器
+        this.categories.forEach(category => {
+            // 創建標籤
+            const tab = document.createElement('button');
+            tab.className = `formula-tab${category.isDefault ? ' active' : ''}`;
+            tab.textContent = category.label;
+            tab.dataset.type = category.id;
+            tabsContainer.appendChild(tab);
+            
+            // 創建對應的容器
+            const container = document.createElement('div');
+            container.className = `formula-group${category.isDefault ? ' active' : ''}`;
+            container.dataset.type = category.id;
+            this.formulaContainer.appendChild(container);
+            
+            // 保存容器引用
+            this.categoryContainers[category.id] = container;
+        });
+        
+        // 添加標籤切換事件
+        tabsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('formula-tab')) {
+                // 更新標籤狀態
+                tabsContainer.querySelectorAll('.formula-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                
+                // 更新容器顯示
+                Object.values(this.categoryContainers).forEach(container => {
+                    container.classList.remove('active');
+                    if (container.dataset.type === e.target.dataset.type) {
+                        container.classList.add('active');
+                    }
+                });
+            }
+        });
+        
+        // 將標籤容器添加到主容器
+        this.formulaContainer.parentElement.insertBefore(tabsContainer, this.formulaContainer);
+    }
+
+    renderFormulas(formulas, container) {
         formulas.forEach(formula => {
             const formulaElement = this.createFormulaElement(formula);
-            this.formulaContainer.appendChild(formulaElement);
+            container.appendChild(formulaElement);
         });
     }
 
