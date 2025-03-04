@@ -397,3 +397,22 @@ h1 {
 .stats-grid .record-item {
     margin-bottom: 0;
 }
+
+@keyframes win-flash {
+    0% {
+        background-color: var(--button-on);
+        box-shadow: none;
+    }
+    50% {
+        background-color: #ffeb3b;
+        box-shadow: 0 0 15px #fff59d;
+    }
+    100% {
+        background-color: var(--button-on);
+        box-shadow: none;
+    }
+}
+
+.win-flash {
+    animation: win-flash 0.6s ease-out forwards;
+}

@@ -162,20 +162,32 @@ class LightsupGame {
 
     checkWin() {
         const hasWon = this.grid.every(row => row.every(cell => cell));
-        if (hasWon && this.timerInterval) {  // 只在計時器還在運行時才觸發獲勝邏輯
+        if (hasWon && this.timerInterval) {
             clearInterval(this.timerInterval);
-            this.timerInterval = null;  // 清除計時器引用
+            this.timerInterval = null;
             const timeSpent = (Date.now() - this.startTime) / 1000;
             
-            // 獲勝時顯示毫秒
+            // 更新時間顯示
             const minutes = Math.floor(timeSpent / 60);
             const seconds = Math.floor(timeSpent % 60);
             const milliseconds = Math.floor((timeSpent % 1) * 1000);
             this.timeElement.textContent = 
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
             
+            // 添加勝利動畫
+            const buttons = this.gridElement.querySelectorAll('.grid-button');
+            buttons.forEach((button, index) => {
+                const row = parseInt(button.dataset.row);
+                const col = parseInt(button.dataset.col);
+                // 計算延遲時間：越靠近左上角越早發光
+                const delay = (row * 2 + col) * 50;
+                
+                setTimeout(() => {
+                    button.classList.add('win-flash');
+                }, delay);
+            });
+
             if (!this.isPracticeMode) {
-                // 只在非練習模式時更新統計數據
                 this.gameStats.gamesCompleted++;
                 
                 if (!this.gameStats.bestTime || timeSpent < this.gameStats.bestTime) {
@@ -193,19 +205,12 @@ class LightsupGame {
                 }
                 
                 this.saveGameStats();
-            }
-            
-            setTimeout(() => {
-                alert(`${this.isPracticeMode ? '練習完成' : '恭喜獲勝'}！\n步數：${this.moves}\n時間：${this.timeElement.textContent}`);
                 
-                if (!this.isPracticeMode) {
-                    // 只在非練習模式時更新記錄面板
-                    const recordContent = document.getElementById('recordContent');
-                    if (recordContent) {
-                        window.updateRecordPanel(recordContent, this.gameStats);
-                    }
+                const recordContent = document.getElementById('recordContent');
+                if (recordContent) {
+                    window.updateRecordPanel(recordContent, this.gameStats);
                 }
-            }, 100);
+            }
         }
     }
 
