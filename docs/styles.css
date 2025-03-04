@@ -219,3 +219,69 @@ h1 {
         right: -320px;
     }
 }
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.tab-button.active {
+    background: #4CAF50;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    padding: 15px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.record-list {
+    margin-top: 15px;
+}
+
+.record-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+.record-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #4CAF50;
+}
+
+.history-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-item span {
+    color: #888;
+}

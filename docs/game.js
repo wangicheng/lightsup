@@ -13,6 +13,9 @@ class LightsupGame {
 
         this.initializeGrid();
         this.setupEventListeners();
+
+        // 初始化遊戲統計數據
+        this.gameStats = this.loadGameStats();
     }
 
     initializeGrid() {
@@ -129,9 +132,40 @@ class LightsupGame {
         const hasWon = this.grid.every(row => row.every(cell => cell));
         if (hasWon) {
             clearInterval(this.timerInterval);
+            const timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
+            
+            // 更新統計數據
+            this.gameStats.gamesCompleted++;
+            
+            // 更新最佳時間
+            if (!this.gameStats.bestTime || timeSpent < this.gameStats.bestTime) {
+                this.gameStats.bestTime = timeSpent;
+            }
+            
+            // 添加歷史記錄
+            this.gameStats.history.push({
+                date: new Date().toISOString(),
+                time: timeSpent,
+                moves: this.moves
+            });
+            
+            // 只保留最近的20條記錄
+            if (this.gameStats.history.length > 20) {
+                this.gameStats.history = this.gameStats.history.slice(-20);
+            }
+            
+            // 保存數據
+            this.saveGameStats();
+            
             setTimeout(() => {
                 alert(`恭喜獲勝！\n步數：${this.moves}\n時間：${this.timeElement.textContent}`);
                 this.isGameStarted = false;
+                
+                // 更新成績記錄顯示
+                const recordContent = document.getElementById('recordContent');
+                if (recordContent) {
+                    window.updateRecordPanel(recordContent, this.gameStats);
+                }
             }, 100);
         }
     }
@@ -143,9 +177,91 @@ class LightsupGame {
         this.timeElement.textContent = 
             `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
+
+    // 加載遊戲統計數據
+    loadGameStats() {
+        const defaultStats = {
+            bestTime: null,
+            gamesCompleted: 0,
+            history: []
+        };
+        
+        const savedStats = localStorage.getItem('lightsupStats');
+        return savedStats ? JSON.parse(savedStats) : defaultStats;
+    }
+    
+    // 保存遊戲統計數據
+    saveGameStats() {
+        localStorage.setItem('lightsupStats', JSON.stringify(this.gameStats));
+    }
 }
 
 // 當 DOM 載入完成後初始化遊戲
 document.addEventListener('DOMContentLoaded', () => {
     new LightsupGame();
-}); 
+});
+
+window.createRightPanel = function() {
+    const rightPanel = document.createElement('div');
+    rightPanel.id = 'rightPanel';
+    rightPanel.className = 'formula-section';
+    
+    // 添加頁面切換按鈕
+    const tabButtons = document.createElement('div');
+    tabButtons.className = 'tab-buttons';
+    
+    const formulaButton = document.createElement('button');
+    formulaButton.textContent = '解法圖鑑';
+    formulaButton.className = 'tab-button active';
+    
+    const recordButton = document.createElement('button');
+    recordButton.textContent = '成績紀錄';
+    recordButton.className = 'tab-button';
+    
+    tabButtons.appendChild(formulaButton);
+    tabButtons.appendChild(recordButton);
+    
+    // 創建內容容器
+    const formulaContent = document.createElement('div');
+    formulaContent.id = 'formulaContent';
+    formulaContent.className = 'tab-content active';
+    
+    const recordContent = document.createElement('div');
+    recordContent.id = 'recordContent';
+    recordContent.className = 'tab-content';
+    
+    // 將原本的公式內容移到 formulaContent 中
+    if (typeof createFormulaPanel === 'function') {
+        createFormulaPanel(formulaContent);
+    } else {
+        console.error('createFormulaPanel is not defined');
+    }
+    
+    // 添加成績紀錄內容
+    if (typeof createRecordPanel === 'function') {
+        createRecordPanel(recordContent);
+    } else {
+        console.error('createRecordPanel is not defined');
+    }
+    
+    rightPanel.appendChild(tabButtons);
+    rightPanel.appendChild(formulaContent);
+    rightPanel.appendChild(recordContent);
+    
+    // 添加切換事件
+    formulaButton.addEventListener('click', () => {
+        formulaButton.className = 'tab-button active';
+        recordButton.className = 'tab-button';
+        formulaContent.className = 'tab-content active';
+        recordContent.className = 'tab-content';
+    });
+    
+    recordButton.addEventListener('click', () => {
+        formulaButton.className = 'tab-button';
+        recordButton.className = 'tab-button active';
+        formulaContent.className = 'tab-content';
+        recordContent.className = 'tab-content active';
+    });
+    
+    return rightPanel;
+} 

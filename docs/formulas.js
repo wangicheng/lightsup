@@ -1,6 +1,9 @@
 class FormulaManager {
-    constructor() {
-        this.formulaContainer = document.getElementById('formulaContainer');
+    constructor(container) {
+        this.formulaContainer = document.createElement('div');
+        this.formulaContainer.className = 'formula-container';
+        container.appendChild(this.formulaContainer);
+        
         this.formulas = {
             "formulas": [
                 {
@@ -271,7 +274,13 @@ class FormulaManager {
     }
 }
 
-// 當 DOM 載入完成後初始化公式管理器
-document.addEventListener('DOMContentLoaded', () => {
-    new FormulaManager();
-}); 
+// 將函數導出為全局函數
+window.createFormulaPanel = function(container) {
+    // 添加標題
+    const title = document.createElement('h2');
+    title.textContent = '解法圖鑑';
+    container.appendChild(title);
+    
+    // 創建並初始化 FormulaManager
+    new FormulaManager(container);
+} 

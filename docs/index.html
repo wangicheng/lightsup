@@ -24,14 +24,24 @@
             </div>
         </div>
 
-        <div class="formula-section">
-            <h2>解法圖鑑</h2>
-            <div id="formulaContainer" class="formula-container">
-                <!-- 公式會由 JavaScript 動態載入 -->
-            </div>
+        <div id="rightPanel" class="formula-section">
+            <!-- 頁面內容會在這裡動態生成 -->
         </div>
     </div>
     <script src="formulas.js"></script>
+    <script src="records.js"></script>
     <script src="game.js"></script>
+    <script>
+        // 當 DOM 載入完成後初始化右側面板和遊戲
+        document.addEventListener('DOMContentLoaded', () => {
+            // 確保所有需要的函數都已經載入
+            if (typeof createRightPanel === 'function' && typeof createFormulaPanel === 'function') {
+                const rightPanel = createRightPanel();
+                document.querySelector('.formula-section').replaceWith(rightPanel);
+            } else {
+                console.error('Required functions not loaded');
+            }
+        });
+    </script>
 </body>
 </html>
