@@ -149,11 +149,11 @@ h1 {
     align-items: center;
 }
 
-.formula-target {
+.formula-pattern {
     position: relative;
 }
 
-.formula-target::after {
+.formula-pattern::after {
     content: "→";
     position: absolute;
     right: -1rem;

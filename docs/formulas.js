@@ -7,8 +7,7 @@ class FormulaManager {
         this.formulas = {
             "formulas": [
                 {
-                    "name": "底部四格",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -17,7 +16,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "上箭頭",
                             "pattern": [
                                 [0,0,1,0,0],
                                 [0,1,1,1,0],
@@ -27,7 +25,6 @@ class FormulaManager {
                             ]
                         },
                         {
-                            "name": "Happy Happy Happy 貓咪雙手向外",
                             "pattern": [
                                 [0,1,0,1,0],
                                 [1,1,0,1,1],
@@ -37,7 +34,6 @@ class FormulaManager {
                             ]
                         },
                         {
-                            "name": "Happy Happy Happy 貓咪雙手向內",
                             "pattern": [
                                 [1,0,0,0,1],
                                 [1,1,0,1,1],
@@ -49,8 +45,7 @@ class FormulaManager {
                     ]
                 },
                 {
-                    "name": "底部三格斜式",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -59,7 +54,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "左釣竿",
                             "pattern": [
                                 [1,0,0,0,0],
                                 [1,1,0,0,0],
@@ -71,8 +65,7 @@ class FormulaManager {
                     ]
                 },
                 {
-                    "name": "底部三格斜式(反)",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -81,7 +74,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "右釣竿",
                             "pattern": [
                                 [0,0,0,0,1],
                                 [0,0,0,1,1],
@@ -93,8 +85,7 @@ class FormulaManager {
                     ]
                 },
                 {
-                    "name": "底部雙點",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -103,7 +94,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "三橫線",
                             "pattern": [
                                 [0,0,1,1,1],
                                 [0,1,0,1,0],
@@ -113,7 +103,6 @@ class FormulaManager {
                             ]
                         },
                         {
-                            "name": "反向三橫線",
                             "pattern": [
                                 [1,1,1,0,0],
                                 [0,1,0,1,0],
@@ -125,8 +114,7 @@ class FormulaManager {
                     ]
                 },
                 {
-                    "name": "底部左三格",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -135,7 +123,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "左側圖形",
                             "pattern": [
                                 [0,1,0,0,0],
                                 [1,1,1,0,0],
@@ -147,8 +134,7 @@ class FormulaManager {
                     ]
                 },
                 {
-                    "name": "底部右三格",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -157,7 +143,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "右側圖形",
                             "pattern": [
                                 [0,0,0,1,0],
                                 [0,0,1,1,1],
@@ -169,8 +154,7 @@ class FormulaManager {
                     ]
                 },
                 {
-                    "name": "底部兩端",
-                    "target": [
+                    "pattern": [
                         [1,1,1,1,1],
                         [1,1,1,1,1],
                         [1,1,1,1,1],
@@ -179,7 +163,6 @@ class FormulaManager {
                     ],
                     "solutions": [
                         {
-                            "name": "右上斜線",
                             "pattern": [
                                 [0,0,0,1,1],
                                 [0,0,1,0,0],
@@ -189,7 +172,6 @@ class FormulaManager {
                             ]
                         },
                         {
-                            "name": "對稱圖形1",
                             "pattern": [
                                 [0,1,1,0,1],
                                 [1,0,0,0,1],
@@ -199,7 +181,6 @@ class FormulaManager {
                             ]
                         },
                         {
-                            "name": "左上斜線",
                             "pattern": [
                                 [1,1,0,0,0],
                                 [0,0,1,0,0],
@@ -209,7 +190,6 @@ class FormulaManager {
                             ]
                         },
                         {
-                            "name": "對稱圖形2",
                             "pattern": [
                                 [1,0,1,1,0],
                                 [1,0,0,0,1],
@@ -236,14 +216,14 @@ class FormulaManager {
         const formulaItem = document.createElement('div');
         formulaItem.className = 'formula-item';
 
-        // 創建目標和解法的容器
+        // 創建初始狀態和解法的容器
         const contentContainer = document.createElement('div');
         contentContainer.className = 'formula-content';
 
-        // 創建目標狀態
-        const targetSection = document.createElement('div');
-        targetSection.className = 'formula-target';
-        targetSection.appendChild(this.createPatternGrid(formula.target, 'target'));
+        // 創建模式區域
+        const patternSection = document.createElement('div');
+        patternSection.className = 'formula-pattern';
+        patternSection.appendChild(this.createPatternGrid(formula.pattern, 'pattern'));
 
         // 創建解法區域
         const solutionsSection = document.createElement('div');
@@ -261,7 +241,7 @@ class FormulaManager {
         });
 
         solutionsSection.appendChild(solutionsGrid);
-        contentContainer.appendChild(targetSection);
+        contentContainer.appendChild(patternSection);
         contentContainer.appendChild(solutionsSection);
         formulaItem.appendChild(contentContainer);
 
@@ -275,15 +255,15 @@ class FormulaManager {
         pattern.forEach((row, i) => {
             row.forEach((cell, j) => {
                 const cellDiv = document.createElement('div');
-                cellDiv.className = cell ? (type === 'target' ? 'on' : 'click') : '';
+                cellDiv.className = cell ? (type === 'pattern' ? 'on' : 'click') : '';
                 grid.appendChild(cellDiv);
             });
         });
 
-        if (type === 'target') {
+        if (type === 'pattern') {
             grid.addEventListener('click', () => {
                 if (window.gameInstance) {
-                    // 使用目標狀態作為初始狀態
+                    // 使用該模式開始遊戲
                     window.gameInstance.startGame(pattern);
                 }
             });
