@@ -59,8 +59,16 @@ class LightsupGame {
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
         }
-        this.startTime = Date.now();
-        this.timerInterval = setInterval(() => this.updateTimer(), 1000);
+        
+        // 重置時間顯示
+        this.timeElement.textContent = '00:00';
+        
+        if (!this.isPracticeMode) {
+            // 正常模式：立即開始計時
+            this.startTime = Date.now();
+            this.timerInterval = setInterval(() => this.updateTimer(), 1000);
+        }
+        // 練習模式：等待第一次點擊才開始計時
     }
 
     clearGrid() {
@@ -121,6 +129,12 @@ class LightsupGame {
         const row = parseInt(button.dataset.row);
         const col = parseInt(button.dataset.col);
 
+        // 練習模式下的第一次點擊，開始計時
+        if (this.isPracticeMode && this.moves === 0) {
+            this.startTime = Date.now();
+            this.timerInterval = setInterval(() => this.updateTimer(), 1000);
+        }
+
         this.toggleLights(row, col, true);
         this.moves++;
         this.movesElement.textContent = this.moves.toString();
@@ -147,6 +161,13 @@ class LightsupGame {
         if (hasWon) {
             clearInterval(this.timerInterval);
             const timeSpent = (Date.now() - this.startTime) / 1000;
+            
+            // 獲勝時顯示毫秒
+            const minutes = Math.floor(timeSpent / 60);
+            const seconds = Math.floor(timeSpent % 60);
+            const milliseconds = Math.floor((timeSpent % 1) * 1000);
+            this.timeElement.textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
             
             if (!this.isPracticeMode) {
                 // 只在非練習模式時更新統計數據
